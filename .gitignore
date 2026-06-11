@@ -1,0 +1,27 @@
+# File di sistema Windows/macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# File degli editor di codice
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# File di log
+*.log
+
+# File di backup
+*.bak
+*.backup
+*.old
+
+# File temporanei PHP
+*.cache
+sessions/
+
+# File con credenziali (per sicurezza extra)
+*.env
+config.local.php
