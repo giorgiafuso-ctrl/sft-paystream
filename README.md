@@ -51,13 +51,13 @@ Di seguito un'anteprima visiva degli schemi Entità-Relazione.
 
 ![Schema E/R SFT](./docs/SFT/schema-er-sft.png)
 
-📄 [Documentazione completa di SFT](./docs/SFT/PROVA N°1.pdf)
+📄 [Documentazione completa di SFT](./docs/SFT/documentazione-sft.pdf)
 
-### Schema E/R — PayStream
+### Schema E/R — PaySteam
 
-![Schema E/R PayStream](./docs/PAY/schema-er-paystream.png)
+![Schema E/R PayStream](./docs/PAY/schema-er-paysteam.png)
 
-📄 [Documentazione completa di PayStream](./docs/PAY/PROVA N°2.pdf)
+📄 [Documentazione completa di PaySteam](./docs/PAY/documentazione-paypdf)
 
 ## Tecnologie
 
