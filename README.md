@@ -1,67 +1,92 @@
-# SFT & PayStream
+# SFT & PaySteam
 
-> Progetto universitario integrato — Corso di **Basi di Dati e di Conoscenza** (2° anno)
+Progetto realizzato per l'esame di **Basi di Dati e di Conoscenza** (2° anno).
 
-Due web application PHP/MySQL collegate tra loro:
+Si tratta di due web application sviluppate in **PHP** e **MySQL** che dialogano tra loro: **SFT**, la piattaforma di vendita biglietti di una società ferroviaria turistica e **PaySteam**, il gateway di pagamento che SFT utilizza per incassare gli acquisti. L'obiettivo era riprodurre, in piccolo, il funzionamento di due servizi web reali che comunicano via API, partendo dalla progettazione del database fino all'implementazione completa di entrambe le applicazioni.
 
-- **SFT** (Servizio Ferroviario Turistico): vendita biglietti online con prenotazione posti, gestione orari, composizioni treni e backoffice amministrativo.
-- **PayStream**: gateway di pagamento per esercenti e consumatori registrati, integrabile in applicazioni esterne come SFT.
+## SFT — Società Ferroviaria Turistica
+
+SFT gestisce una linea ferroviaria turistica di **54 km con 10 stazioni**. Sulla linea circolano 4 coppie di treni storici nei giorni festivi (tutto l'anno) e 1 coppia nei giorni feriali, ma solo nel periodo estivo (dal 1° giugno al 30 settembre). Ogni treno ha una composizione variabile di locomotive e carrozze.
+
+L'applicazione permette ai clienti di:
+
+- consultare gli orari e cercare le corse disponibili tra due stazioni
+- acquistare un biglietto online con prenotazione del posto a sedere
+- vedere il prezzo calcolato automaticamente in base ai chilometri percorsi e alla composizione del treno
+
+Esistono inoltre due aree riservate:
+
+- un **backoffice di esercizio** per gestire orari, treni e composizioni delle carrozze
+- un **backoffice amministrativo** che calcola la redditività di ogni treno, confrontando i ricavi con i costi
+
+## PaySteam — Pagamenti online
+
+PayStream è un servizio di pagamento pensato per essere richiamato da applicazioni esterne (come fa SFT in questo progetto). Gli utenti si registrano come **consumatori** o come **esercenti** e collegano al proprio profilo un conto corrente in euro oppure una carta di credito.
+
+
+## Come comunicano SFT e PaySteam
+
+L'integrazione tra le due applicazioni segue il flusso tipico di un gateway di pagamento esterno, basato su uno scambio **M2M** (machine-to-machine) e un identificativo univoco di transazione (**UUID**) che fa da filo conduttore tra i due sistemi:
+
+1. l'utente prenota un biglietto su SFT e clicca su *"Paga"*
+2. SFT genera un **UUID** che identifica la transazione e lo conserva nel proprio database
+3. SFT contatta PayStream via M2M e invia l'identificativo dell'esercente, l'importo, la descrizione del pagamento e l'UUID generato
+4. PayStream registra i dati ricevuti in attesa che l'utente completi il pagamento
+5. SFT reindirizza l'utente su PayStream passando l'UUID nell'URL
+6. L'utente si autentica su PayStream con le proprie credenziali (account distinto da quello SFT)
+7. PayStream usa l'UUID per recuperare i dati della transazione e mostrarli all'utente
+8. L'utente conferma e PayStream esegue il movimento contabile, addebitando il consumatore e accreditando l'esercente
+9. PayStream notifica a SFT, sempre via M2M, l'UUID della transazione con l'esito (ok / ko)
+10. PayStream reindirizza l'utente su SFT, che a questo punto può emettere il biglietto
+
+Il vantaggio di questo schema è che SFT non vede mai le credenziali di pagamento dell'utente e PayStream non sa nulla del biglietto: ciascun sistema lavora solo sui dati di propria competenza e l'UUID garantisce che le due metà del flusso si "ritrovino" in modo univoco.
+
+## Documentazione
+
+La cartella [`docs/`](./docs) contiene la documentazione completa di progettazione dei due database — schemi E/R, schema logico relazionale, tabella dei volumi e analisi delle operazioni principali — in formato PDF.
+
+Di seguito un'anteprima visiva degli schemi Entità-Relazione.
+
+### Schema E/R — SFT
+
+![Schema E/R SFT](./docs/SFT/schema-er-sft.png)
+
+📄 [Documentazione completa di SFT](./docs/SFT/PROVA N°1.pdf)
+
+### Schema E/R — PayStream
+
+![Schema E/R PayStream](./docs/PAY/schema-er-paystream.png)
+
+📄 [Documentazione completa di PayStream](./docs/PAY/PROVA N°2.pdf)
+
+## Tecnologie
+
+- **PHP** lato server
+- **MySQL** come DBMS
+- **HTML, CSS e Bootstrap** per l'interfaccia
+- **BCrypt** (`password_hash` / `password_verify`) per la gestione delle password
+
+### Ambiente di lavoro
+
+Il progetto è nato in locale su **XAMPP**, ma il grosso dello sviluppo è stato fatto direttamente su un server di sviluppo: scrittura del codice in **Visual Studio Code** e deploy dei file via **FileZilla** in FTP.
+
+## Configurazione
+
+Il repository contiene il codice delle due web application, ma **non** lo script SQL per la creazione dei database: per far girare il progetto in locale è necessario ricostruirli a partire dalla documentazione presente in `docs/`.
+
+Una volta creati i due database MySQL, vanno configurate le credenziali nei file `SFT/connessione.php` e `PAY/connessione.php`, sostituendo i segnaposto:
+
+```php
+$host     = "INSERIRE_HOST";
+$user     = "INSERIRE_USER";
+$password = "INSERIRE_PASSWORD";
+$database = "INSERIRE_NOME_DB";
+```
+
+## Note
+
+Il progetto è stato realizzato individualmente a scopo didattico. Le password sono salvate in forma hashata, le query sono parametrizzate per prevenire SQL injection e le credenziali del database non sono incluse nei file pubblicati nel repository.
 
 ---
 
-## 🚆 SFT — Servizio Ferroviario Turistico
-
-Web application per la vendita online di biglietti di una società ferroviaria che gestisce una linea turistica di **54 km con 10 stazioni**.
-
-### Funzionalità principali
-- Acquisto biglietti online con prenotazione del posto a sedere
-- Calcolo automatico del prezzo in base ai km percorsi
-- Gestione di **4 coppie di treni storici** nei giorni festivi (tutto l'anno) e **1 coppia** nei feriali (1° giugno – 30 settembre)
-- Composizione variabile di carrozze e locomotive per ogni treno
-- **Backoffice amministrativo**: calcolo della redditività di ogni treno
-- **Backoffice di esercizio**: gestione orari e composizione treni
-
----
-
-## 💳 PayStream — Sistema di Pagamento Online
-
-Web application per il pagamento online di servizi e beni, utilizzabile da qualunque applicazione esterna (come SFT).
-
-### Funzionalità principali
-- Registrazione utenti **consumatori** ed **esercenti**
-- Ogni utente possiede un **conto corrente in euro** o **disponibilità di carta di credito**
-- API richiamabile da applicazioni esterne con parametri esercizio + importo
-- Verifica delle credenziali del consumatore
-- Riepilogo del bene/servizio con accettazione esplicita della transazione
-- Comunicazione dell'avvenuto pagamento all'applicazione chiamante
-- Accredito automatico sul conto dell'esercente
-
----
-
-## 🛠️ Tecnologie utilizzate
-
-- **Backend**: PHP
-- **Database**: MySQL
-- **Frontend**: HTML, CSS, Bootstrap
-- **Sicurezza password**: BCrypt (`password_hash` / `password_verify`)
-
----
-
-## ⚙️ Configurazione
-
-I file `SFT/connessione.php` e `PAY/connessione.php` contengono dei segnaposto al posto delle credenziali reali del database.
-
-Per far funzionare i progetti, sostituire i seguenti valori con quelli del proprio ambiente:
-
-\`\`\`php
-\$host     = "INSERIRE_HOST";
-\$user     = "INSERIRE_USER";
-\$password = "INSERIRE_PASSWORD";
-\$database = "INSERIRE_NOME_DB";
-\`\`\`
-
----
-
-## 👤 Autrice
-
-**Giorgia Fuso** — Progetto realizzato individualmente.
+**Giorgia Fuso**
