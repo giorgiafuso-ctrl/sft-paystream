@@ -1,6 +1,11 @@
 # SFT & PaySteam
 
-Progetto realizzato per l'esame di **Basi di Dati e di Conoscenza** (2° anno).
+Progetto sviluppato per l'esame di **Basi di Dati e di Conoscenza**  
+Università degli Studi Guglielmo Marconi
+
+### 🔗 Versioni sul portale universitario
+- **SFT (Società Ferroviaria Turistica)** → https://webstudenti.unimarconi.it/gio.fuso/SFT/
+- **PaySteam (Gateway di pagamento)** → https://webstudenti.unimarconi.it/gio.fuso/PAY/
 
 Si tratta di due web application sviluppate in **PHP** e **MySQL** che dialogano tra loro: **SFT**, la piattaforma di vendita biglietti di una società ferroviaria turistica e **PaySteam**, il gateway di pagamento che SFT utilizza per incassare gli acquisti. L'obiettivo era riprodurre, in piccolo, il funzionamento di due servizi web reali che comunicano via API, partendo dalla progettazione del database fino all'implementazione completa di entrambe le applicazioni.
 
