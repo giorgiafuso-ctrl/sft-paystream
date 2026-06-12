@@ -26,7 +26,7 @@ Esistono inoltre due aree riservate:
 
 ## PaySteam — Pagamenti online
 
-PayStream è un servizio di pagamento pensato per essere richiamato da applicazioni esterne (come fa SFT in questo progetto). Gli utenti si registrano come **consumatori** o come **esercenti** e collegano al proprio profilo un conto corrente in euro oppure una carta di credito.
+PaySteam è un servizio di pagamento pensato per essere richiamato da applicazioni esterne (come fa SFT in questo progetto). Gli utenti si registrano come **consumatori** o come **esercenti** e collegano al proprio profilo un conto corrente in euro oppure una carta di credito.
 
 
 ## Come comunicano SFT e PaySteam
@@ -35,16 +35,16 @@ L'integrazione tra le due applicazioni segue il flusso tipico di un gateway di p
 
 1. l'utente prenota un biglietto su SFT e clicca su *"Paga"*
 2. SFT genera un **UUID** che identifica la transazione e lo conserva nel proprio database
-3. SFT contatta PayStream via M2M e invia l'identificativo dell'esercente, l'importo, la descrizione del pagamento e l'UUID generato
-4. PayStream registra i dati ricevuti in attesa che l'utente completi il pagamento
-5. SFT reindirizza l'utente su PayStream passando l'UUID nell'URL
-6. L'utente si autentica su PayStream con le proprie credenziali (account distinto da quello SFT)
-7. PayStream usa l'UUID per recuperare i dati della transazione e mostrarli all'utente
-8. L'utente conferma e PayStream esegue il movimento contabile, addebitando il consumatore e accreditando l'esercente
-9. PayStream notifica a SFT, sempre via M2M, l'UUID della transazione con l'esito (ok / ko)
-10. PayStream reindirizza l'utente su SFT, che a questo punto può emettere il biglietto
+3. SFT contatta PaySteam via M2M e invia l'identificativo dell'esercente, l'importo, la descrizione del pagamento e l'UUID generato
+4. PaySteam registra i dati ricevuti in attesa che l'utente completi il pagamento
+5. SFT reindirizza l'utente su PaySteam passando l'UUID nell'URL
+6. L'utente si autentica su PaySteam con le proprie credenziali (account distinto da quello SFT)
+7. PaySteam usa l'UUID per recuperare i dati della transazione e mostrarli all'utente
+8. L'utente conferma e PaySteam esegue il movimento contabile, addebitando il consumatore e accreditando l'esercente
+9. PaySteam notifica a SFT, sempre via M2M, l'UUID della transazione con l'esito (ok / ko)
+10. PaySteam reindirizza l'utente su SFT, che a questo punto può emettere il biglietto
 
-Il vantaggio di questo schema è che SFT non vede mai le credenziali di pagamento dell'utente e PayStream non sa nulla del biglietto: ciascun sistema lavora solo sui dati di propria competenza e l'UUID garantisce che le due metà del flusso si "ritrovino" in modo univoco.
+Il vantaggio di questo schema è che SFT non vede mai le credenziali di pagamento dell'utente e PaySteam non sa nulla del biglietto: ciascun sistema lavora solo sui dati di propria competenza e l'UUID garantisce che le due metà del flusso si "ritrovino" in modo univoco.
 
 ## Documentazione
 
@@ -60,7 +60,7 @@ Di seguito un'anteprima visiva degli schemi Entità-Relazione.
 
 ### Schema E/R — PaySteam
 
-![Schema E/R PayStream](./docs/PAY/schema-er-paysteam.png)
+![Schema E/R PaySteam](./docs/PAY/schema-er-paysteam.png)
 
 📄 [Documentazione completa di PaySteam](./docs/PAY/documentazione-pay.pdf)
 
