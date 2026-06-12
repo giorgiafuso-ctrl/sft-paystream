@@ -57,7 +57,7 @@ Di seguito un'anteprima visiva degli schemi Entità-Relazione.
 
 ![Schema E/R PayStream](./docs/PAY/schema-er-paysteam.png)
 
-📄 [Documentazione completa di PaySteam](./docs/PAY/documentazione-paypdf)
+📄 [Documentazione completa di PaySteam](./docs/PAY/documentazione-pay.pdf)
 
 ## Tecnologie
 
